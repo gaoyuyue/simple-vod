@@ -1,8 +1,6 @@
 package cn.attackme.simplevod.utils;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -11,14 +9,33 @@ import java.nio.file.Paths;
  */
 public class FileUtils {
     /**
+     * 判断文件是否存在
+     * @param path
+     * @return
+     */
+    public static boolean isExist(String path) {
+        return Files.exists(Paths.get(path));
+    }
+
+    /**
+     * 获取指定文件的长度
+     * @param path
+     * @return
+     */
+    public static long getLength(String path) {
+        return new File(path).length();
+    }
+
+    /**
      * 读取文件
      * @param src
      * @param target
      * @throws IOException
      */
-   public static void read(String src, OutputStream target) throws IOException {
-       Files.copy(Paths.get(src), target);
-   }
+    public static void read(String src, OutputStream target) throws IOException {
+        Files.copy(Paths.get(src), target);
+        target.flush();
+    }
 
     /**
      * 从文件指定位置读取
