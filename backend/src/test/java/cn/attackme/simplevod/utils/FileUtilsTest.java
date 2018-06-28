@@ -27,7 +27,7 @@ public class FileUtilsTest {
     }
 
     /**
-     * 读文件成功测试
+     * 读文件成功
      * @throws IOException
      */
     @Test
@@ -40,7 +40,7 @@ public class FileUtilsTest {
     }
 
     /**
-     * 读不存在的文件抛出异常测试
+     * 读不存在的文件抛出异常
      * @throws IOException
      */
     @Test(expected = IOException.class)
@@ -51,7 +51,7 @@ public class FileUtilsTest {
     }
 
     /**
-     * 随机读取文件成功测试
+     * 随机读取文件成功
      * @throws IOException
      */
     @Test
@@ -64,7 +64,7 @@ public class FileUtilsTest {
     }
 
     /**
-     * 随即读取不存在的文件抛出异常测试
+     * 随即读取不存在的文件抛出异常
      * @throws IOException
      */
     @Test(expected = IOException.class)
@@ -75,7 +75,7 @@ public class FileUtilsTest {
     }
 
     /**
-     * 随机读文件设置非法seek(即seek为负数)，抛出异常测试
+     * 随机读文件设置非法seek(即seek为负数)，抛出异常
      * @throws IOException
      */
     @Test(expected = IOException.class)
@@ -97,5 +97,29 @@ public class FileUtilsTest {
         FileOutputStream fos = new FileOutputStream(targetFile);
         FileUtils.readWithSeek(srcPath, fos, targetFile.length() + 2);
         Assert.assertEquals(srcFile.length() - 2, targetFile.length());
+    }
+
+
+    /**
+     * 随机读取文件成功,通过设置start和length
+     * @throws IOException
+     */
+    @Test
+    public void testReadWithSeekByStartAndLengthSuccess() throws IOException {
+        File targetFile = new File(directory.toString()+"/"+UUID.randomUUID().toString());
+        FileOutputStream fos = new FileOutputStream(targetFile);
+        FileUtils.readWithSeek(srcPath, fos, 0, 1030);
+        Assert.assertEquals(1030, targetFile.length());
+    }
+
+    /**
+     * 随机读文件设置非法Length(即Length为负数)，抛出异常
+     * @throws IOException
+     */
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testReadWithSeekLengthIllegalThrowIndexOutOfBoundsException() throws IOException {
+        File targetFile = new File(directory.toString()+"/"+UUID.randomUUID().toString());
+        FileOutputStream fos = new FileOutputStream(targetFile);
+        FileUtils.readWithSeek(srcPath, fos, 0,-1);
     }
 }

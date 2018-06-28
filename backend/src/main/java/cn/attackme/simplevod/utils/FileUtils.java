@@ -37,4 +37,28 @@ public class FileUtils {
         target.flush();
         randomAccessFile.close();
     }
+
+    /**
+     * 指定随机文件读取的开始位置,和读取length
+     * @param src
+     * @param target
+     * @param start
+     * @param length
+     * @throws IOException
+     */
+    public static void readWithSeek(String src, OutputStream target, long start, long length) throws IOException {
+        RandomAccessFile randomAccessFile = new RandomAccessFile(src, "r");
+        randomAccessFile.seek(start);
+        byte[] buf = new byte[1024];
+        int len;
+        while (length > 1024) {
+            len = randomAccessFile.read(buf);
+            target.write(buf, 0, len);
+            length -= len;
+        }
+        randomAccessFile.read(buf, 0, (int) length);
+        target.write(buf, 0, (int) length);
+        target.flush();
+        randomAccessFile.close();
+    }
 }
